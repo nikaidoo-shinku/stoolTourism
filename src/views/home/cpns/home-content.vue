@@ -1,0 +1,44 @@
+<template>
+    <div class="content">
+        <h2 class="title">热门精选</h2>
+        <div class="list">
+            <template v-for="(item, index) in houselist" :key="item.data.houseId">
+                <house-item-v9 v-if="item.discoveryContentType === 9" :item-data="item.data" @click="itemClick(item.data)">type-9{{ item.data.houseName }}</house-item-v9>
+                <house-item-v3 v-else-if="item.discoveryContentType === 3" :item-data="item.data" @click="itemClick(item.data)">type-3{{ item.data.houseName }}</house-item-v3>
+            </template>
+        </div>
+    </div>
+</template>
+  
+<script setup>
+import houseItemV3 from '@/components/house-item-v3/house-item-v3.vue'
+import houseItemV9 from '@/components/house-item-v9/house-item-v9.vue';
+import { useHomeStore } from '@/stores/modules/home';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+
+const homeStore = useHomeStore()
+const { houselist } = storeToRefs(homeStore)
+const router = useRouter()
+
+const itemClick = (item) => {
+    router.push(`/detail/${item.houseId}`)
+}
+
+</script>
+  
+<style lang="less" scoped>
+.content {
+    padding: 5px 8px;
+    margin-bottom: 100px;
+
+    .title {
+        font-size: 22px;
+        padding: 5px;
+    }
+    .list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+</style>
